@@ -30,6 +30,7 @@
 		3B56E81225718A40006F57D0 /* CityInfo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B56E81125718A40006F57D0 /* CityInfo.storyboard */; };
 		3B56E81425718A56006F57D0 /* CityInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56E81325718A56006F57D0 /* CityInfoViewController.swift */; };
 		3B56E81625718A99006F57D0 /* CityInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56E81525718A99006F57D0 /* CityInfoModel.swift */; };
+		3B56E819257245A0006F57D0 /* ConfigurableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56E818257245A0006F57D0 /* ConfigurableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		3B56E81125718A40006F57D0 /* CityInfo.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CityInfo.storyboard; sourceTree = "<group>"; };
 		3B56E81325718A56006F57D0 /* CityInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityInfoViewController.swift; sourceTree = "<group>"; };
 		3B56E81525718A99006F57D0 /* CityInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityInfoModel.swift; sourceTree = "<group>"; };
+		3B56E818257245A0006F57D0 /* ConfigurableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 		3B56E7F0257161B2006F57D0 /* ServiceLayer */ = {
 			isa = PBXGroup;
 			children = (
+				3B56E8172572458D006F57D0 /* Protocols */,
 				3B56E7F7257163CE006F57D0 /* ServiceAssembly */,
 				3B56E7F425716233006F57D0 /* Managers */,
 			);
@@ -278,6 +281,14 @@
 			path = CityInfoModel;
 			sourceTree = "<group>";
 		};
+		3B56E8172572458D006F57D0 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				3B56E818257245A0006F57D0 /* ConfigurableView.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -362,6 +373,7 @@
 				3B56E7E825715C51006F57D0 /* WeatherRequestProtocol.swift in Sources */,
 				3B56E7ED25715D68006F57D0 /* WeatherRequestSenderProtocol.swift in Sources */,
 				3B56E7C5256FC66D006F57D0 /* CitiesListViewController.swift in Sources */,
+				3B56E819257245A0006F57D0 /* ConfigurableView.swift in Sources */,
 				3B56E7F3257161E5006F57D0 /* CoreAssembly.swift in Sources */,
 				3B56E7C1256FC66D006F57D0 /* AppDelegate.swift in Sources */,
 				3B56E7EB25715D31006F57D0 /* RequestSender.swift in Sources */,

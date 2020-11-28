@@ -10,10 +10,12 @@ import UIKit
 
 class CitiesListViewController: UIViewController {
     
-    var array: [WeatherModel] = []
     var model: CitiesListModelProtocol?
-    
-//    var weatherRequest = WeatherRequest()
+    var filteredTableData = [WeatherModel]()
+    var searchController = UISearchController()
+    var isSearchBarEmpty: Bool {
+      return searchController.searchBar.text?.isEmpty ?? true
+    }
 
     @IBOutlet weak var citiesTableView: UITableView!
     override func viewDidLoad() {
@@ -21,31 +23,79 @@ class CitiesListViewController: UIViewController {
         // Do any additional setup after loading the view.
         citiesTableView.register(UINib(nibName: "CityViewCell", bundle: nil), forCellReuseIdentifier: "CityCell")
         citiesTableView.dataSource = self
-        model?.loadData()
-
-
+        loadData()
+        searchControllerSetup()
+    }
+    
+    func loadData() {
+        DispatchQueue.global(qos: .background).async {
+            self.model?.loadData()
+        }
+    }
+    
+    func searchControllerSetup() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search City"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
+    
+    func filterContentForSearchText(_ searchText: String) {
+        guard let modelArray = model?.weatherArray else { return }
+        filteredTableData = modelArray.filter { (weather: WeatherModel) -> Bool in
+        return weather.name.lowercased().contains(searchText.lowercased())
+      }
+      
+      citiesTableView.reloadData()
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension CitiesListViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.isActive && !isSearchBarEmpty {
+            return filteredTableData.count
+        } else {
         return model?.weatherArray.count ?? 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = citiesTableView.dequeueReusableCell(withIdentifier: "CityCell", for: indexPath) as? CityViewCell else { return UITableViewCell() }
+        if searchController.isActive && !isSearchBarEmpty {
+            cell.configure(with: filteredTableData[indexPath.row])
+        } else {
         if let weatherArray = model?.weatherArray[indexPath.row] {
         cell.configure(with: weatherArray)
+        }
         }
         return cell
     }
 }
+
+// MARK: - CitiesListDelegate
 
 extension CitiesListViewController: CitiesListDelegate {
     func loadComplited() {
         DispatchQueue.main.async {
             self.citiesTableView.reloadData()
         }
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+
+extension CitiesListViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        guard let text = searchBar.text else { return }
+        filterContentForSearchText(text)
     }
 }
 

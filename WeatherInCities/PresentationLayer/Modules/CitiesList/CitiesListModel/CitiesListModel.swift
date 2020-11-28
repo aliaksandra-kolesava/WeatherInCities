@@ -43,7 +43,6 @@ class CitiesListModel: CitiesListModelProtocol {
     
     func loadData() {
         for latLon in latLonArray {
-            print("\(latLon.lat), \(latLon.lon)")
             networkManager.loadData(lat: latLon.lat, lon: latLon.lon) { (weather, error) in
             if let error = error {
                 print(error)
@@ -51,7 +50,6 @@ class CitiesListModel: CitiesListModelProtocol {
             }
             guard let weather = weather else { return }
             self.weatherArray.append(weather)
-            print(weather)
             self.delegate?.loadComplited()
             }
         }

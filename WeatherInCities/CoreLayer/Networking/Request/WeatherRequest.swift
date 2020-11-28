@@ -36,7 +36,6 @@ class WeatherRequest: WeatherRequestProtocol {
 //        request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("14dfa846-4ee2-490c-90b8-d94e90654778", forHTTPHeaderField: "X-Yandex-API-Key")
         request.timeoutInterval = 60.0
-        print("WeatherRequest")
         return request
     }
 }

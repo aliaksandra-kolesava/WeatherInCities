@@ -42,7 +42,6 @@ class WeatherParser: WeatherParserProtocol {
             let name = decodedData.info.tzinfo.name
             let temp = decodedData.fact.temp
             let weather = WeatherModel(condition: factCondition, name: name, temp: temp)
-            print("WeatherParser")
             return weather
         } catch {
             print("\(error.localizedDescription) trying to convert data to JSON")

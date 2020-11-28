@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 protocol PresentationAssemblyProtocol {
+    func mainNavigationController() -> UINavigationController
     func citiesListViewController() -> CitiesListViewController
 }
 
@@ -18,6 +19,16 @@ class PresentationAssembly: PresentationAssemblyProtocol {
     private let serviceAssembly: ServiceAssemblyProtocol
     init(serviceAssembly: ServiceAssemblyProtocol) {
         self.serviceAssembly = serviceAssembly
+    }
+    
+    func mainNavigationController() -> UINavigationController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navigationController = storyboard.instantiateViewController(withIdentifier: "MainNavigationController") as? UINavigationController
+        guard let navigationVC = navigationController else {
+            return UINavigationController()
+        }
+        navigationVC.setViewControllers([citiesListViewController()], animated: false)
+        return navigationVC
     }
     
     func citiesListViewController() -> CitiesListViewController {
