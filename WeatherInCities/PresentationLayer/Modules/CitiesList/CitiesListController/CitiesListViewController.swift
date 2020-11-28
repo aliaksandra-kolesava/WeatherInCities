@@ -103,7 +103,7 @@ extension CitiesListViewController: UITableViewDelegate {
             let lonString = String(weather[indexPath.row].lon)
             cityInfoViewController.lat = latString
             cityInfoViewController.lon = lonString
-            cityInfoViewController.icon = array?[indexPath.row].icon
+            cityInfoViewController.icon = weather[indexPath.row].icon
         }
         citiesTableView.deselectRow(at: indexPath, animated: true)
     }
