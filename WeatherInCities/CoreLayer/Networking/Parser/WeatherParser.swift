@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SVGKit
 
 
 struct WeatherData: Codable {
@@ -15,6 +16,8 @@ struct WeatherData: Codable {
     let info: Info
 }
 struct Info: Codable {
+    let lat: Double
+    let lon: Double
     let tzinfo: Tzinfo
 }
 struct Tzinfo: Codable {
@@ -40,6 +43,8 @@ struct WeatherModel {
     let wind_dir: String
     let pressure_mm: Double
     let humidity: Double
+    let lat: Double
+    let lon: Double
 }
 
 class WeatherParser: WeatherParserProtocol {
@@ -57,7 +62,17 @@ class WeatherParser: WeatherParserProtocol {
             let wind_dir = decodedData.fact.wind_dir
             let pressure = decodedData.fact.pressure_mm
             let humidity = decodedData.fact.humidity
-            let weather = WeatherModel(condition: factCondition, name: name, temp: temp, icon: icon, wind_speed: wind_speed, wind_dir: wind_dir, pressure_mm: pressure, humidity: humidity)
+            let lat = decodedData.info.lat
+            let lon = decodedData.info.lon
+            let weather = WeatherModel(condition: factCondition,
+                                       name: name,
+                                       temp: temp,
+                                       icon: icon,
+                                       wind_speed: wind_speed,
+                                       wind_dir: wind_dir,
+                                       pressure_mm: pressure,
+                                       humidity: humidity,
+                                       lat: lat, lon: lon)
             return weather
         } catch {
             print("\(error.localizedDescription) trying to convert data to JSON")
@@ -67,10 +82,10 @@ class WeatherParser: WeatherParserProtocol {
 }
 
 class ImageParser: WeatherParserProtocol {
-    typealias Model = UIImage
+    typealias Model = SVGKImage
     
     func parse(data: Data) -> Model? {
-    guard let picture = UIImage(data: data)  else { return nil }
+        guard let picture: SVGKImage = SVGKImage(data: data)  else { return nil }
     return picture
 }
 }

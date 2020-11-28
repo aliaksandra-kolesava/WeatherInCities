@@ -15,9 +15,9 @@ class CitiesListViewController: UIViewController {
     var filteredTableData = [WeatherModel]()
     var searchController = UISearchController()
     var isSearchBarEmpty: Bool {
-      return searchController.searchBar.text?.isEmpty ?? true
+        return searchController.searchBar.text?.isEmpty ?? true
     }
-
+    
     @IBOutlet weak var citiesTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,11 +45,12 @@ class CitiesListViewController: UIViewController {
     
     func filterContentForSearchText(_ searchText: String) {
         guard let modelArray = model?.weatherArray else { return }
-        filteredTableData = modelArray.filter { (weather: WeatherModel) -> Bool in
-        return weather.name.lowercased().contains(searchText.lowercased())
-      }
-      
-      citiesTableView.reloadData()
+        let sortedData = modelArray.sorted() {$0.name < $1.name}
+        filteredTableData = sortedData.filter { (weather: WeatherModel) -> Bool in
+            return weather.name.lowercased().contains(searchText.lowercased())
+        }
+        
+        citiesTableView.reloadData()
     }
 }
 
@@ -64,7 +65,7 @@ extension CitiesListViewController: UITableViewDataSource {
         if searchController.isActive && !isSearchBarEmpty {
             return filteredTableData.count
         } else {
-        return model?.weatherArray.count ?? 0
+            return model?.weatherArray.count ?? 0
         }
     }
     
@@ -73,9 +74,10 @@ extension CitiesListViewController: UITableViewDataSource {
         if searchController.isActive && !isSearchBarEmpty {
             cell.configure(with: filteredTableData[indexPath.row])
         } else {
-        if let weatherArray = model?.weatherArray[indexPath.row] {
-        cell.configure(with: weatherArray)
-        }
+            if let weatherArray = model?.weatherArray {
+                let sortedData = weatherArray.sorted() { $0.name < $1.name}
+                cell.configure(with: sortedData[indexPath.row])
+            }
         }
         return cell
     }
@@ -87,9 +89,19 @@ extension CitiesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cityInfoViewController = presentationAssembly?.cityInfoCiewController() else { return }
         navigationController?.pushViewController(cityInfoViewController, animated: true)
-        cityInfoViewController.lat = model?.currentLatLon[indexPath.row].lat
-        cityInfoViewController.lon = model?.currentLatLon[indexPath.row].lon
-        cityInfoViewController.icon = model?.weatherArray[indexPath.row].icon
+        let array = model?.weatherArray.sorted() { $0.name < $1.name }
+        guard let weather = array else { return }
+        if searchController.isActive && !isSearchBarEmpty {
+            cityInfoViewController.lat = String(filteredTableData[indexPath.row].lat)
+            cityInfoViewController.lon = String(filteredTableData[indexPath.row].lon)
+            cityInfoViewController.icon = filteredTableData[indexPath.row].icon
+        } else {
+            let latString = String(weather[indexPath.row].lat)
+            let lonString = String(weather[indexPath.row].lon)
+            cityInfoViewController.lat = latString
+            cityInfoViewController.lon = lonString
+            cityInfoViewController.icon = array?[indexPath.row].icon
+        }
         citiesTableView.deselectRow(at: indexPath, animated: true)
     }
 }

@@ -27,20 +27,12 @@ class WeatherRequest: WeatherRequestProtocol {
         return urlComponents.url
     }
     
-//    func urlRequestImage(icon: String) -> URLRequest? {
-//        guard let url = URL(string: "https://yastatic.net/weather/i/icons/blueye/color/svg/\(icon).svg") else { return nil}
-//        let request = URLRequest(url: url, cachePolicy: URLRequest.CachePolicy.returnCacheDataElseLoad)
-//        return request
-//    }
-    
     func urlRequest(lat: String?, lon: String?, icon: String?) -> URLRequest? {
         guard let lat = lat, let lon = lon else { return nil }
-
+        
         guard let url = urlComponents(lat: lat, lon: lon) else { return nil }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("14dfa846-4ee2-490c-90b8-d94e90654778", forHTTPHeaderField: "X-Yandex-API-Key")
         request.timeoutInterval = 60.0
         return request
@@ -51,10 +43,8 @@ class ImageRequest: WeatherRequestProtocol {
     
     func urlRequest(lat: String?, lon: String?, icon: String?) -> URLRequest? {
         guard let icon = icon else { return nil }
-        
-           guard let url = URL(string: "https://yastatic.net/weather/i/icons/blueye/color/svg/\(icon).svg") else { return nil}
-        print(url)
-           let request = URLRequest(url: url, cachePolicy: URLRequest.CachePolicy.returnCacheDataElseLoad)
-           return request
-       }
+        guard let url = URL(string: "https://yastatic.net/weather/i/icons/blueye/color/svg/\(icon).svg") else { return nil}
+        let request = URLRequest(url: url, cachePolicy: URLRequest.CachePolicy.returnCacheDataElseLoad)
+        return request
+    }
 }

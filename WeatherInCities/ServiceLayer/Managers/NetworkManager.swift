@@ -8,12 +8,13 @@
 
 import Foundation
 import UIKit
+import SVGKit
 
 protocol NetworkManagerProtocol {
     func loadData(lat: String, lon: String, completionHandler: @escaping (WeatherModel?, String?) -> Void)
-    func loadImage(icon: String, completion: @escaping (UIImage?, String?) -> Void)
-    func checkCache(icon: String) -> UIImage?
-    func saveToCache(icon: String, picture: UIImage)
+    func loadImage(icon: String, completion: @escaping (SVGKImage?, String?) -> Void)
+    func checkCache(icon: String) -> SVGKImage?
+    func saveToCache(icon: String, picture: SVGKImage)
 }
 
 class NetworkManager: NetworkManagerProtocol {
@@ -24,7 +25,7 @@ class NetworkManager: NetworkManagerProtocol {
         self.requestSender = requestSender
     }
     
-    var cache = NSCache<NSString, UIImage>()
+    var cache = NSCache<NSString, SVGKImage>()
     
     func loadData(lat: String, lon: String, completionHandler: @escaping (WeatherModel?, String?) -> Void) {
         let requestConfig = RequestFactory.Request.newWeatherConfig()
@@ -38,9 +39,9 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
     
-    func loadImage(icon: String, completion: @escaping (UIImage?, String?) -> Void) {
+    func loadImage(icon: String, completion: @escaping (SVGKImage?, String?) -> Void) {
         let requestConfig = RequestFactory.Request.newWeatherImage()
-        requestSender.send(lat: nil, lon: nil, icon: icon, requestConfig: requestConfig) { (result: Result<UIImage>) in
+        requestSender.send(lat: nil, lon: nil, icon: icon, requestConfig: requestConfig) { (result: Result<SVGKImage>) in
               switch result {
                   case .success(let pictures):
                       completion(pictures, nil)
@@ -50,14 +51,14 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
     
-    func checkCache(icon: String) -> UIImage? {
+    func checkCache(icon: String) -> SVGKImage? {
            if let cache = cache.object(forKey: icon as NSString) {
                return cache
            }
            return nil
        }
        
-       func saveToCache(icon: String, picture: UIImage) {
+       func saveToCache(icon: String, picture: SVGKImage) {
            cache.setObject(picture, forKey: icon as NSString)
        }
 }

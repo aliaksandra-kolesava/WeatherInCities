@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVGKit
 
 class CityInfoViewController: UIViewController {
 
@@ -28,17 +29,21 @@ class CityInfoViewController: UIViewController {
         guard let lat = lat else { return }
         guard let lon = lon else { return }
         guard let icon = icon else { return }
-        print(lat)
-        print(lon)
         
         DispatchQueue.global(qos: .background).async {
             self.model?.loadData(lat: lat, lon: lon)
             self.model?.loadImage(icon: icon, completion: { (image) in
                 DispatchQueue.main.async {
-                    self.weatherIcon.image = image
+                    self.weatherIcon.image = image?.uiImage
                 }
             })
         }
+    }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        let fontTemperature = weatherIcon.bounds.size.height / 2
+        weatherTemp.font = UIFont.systemFont(ofSize: fontTemperature)
+        cityName.font = UIFont.systemFont(ofSize: fontTemperature / 2)
     }
 }
 
@@ -46,7 +51,6 @@ extension CityInfoViewController: CityInfoDelegate {
     func loadComplited() {
         DispatchQueue.main.async {
             guard let weather = self.model?.weatherInfo else { return }
-            print(weather.icon)
             self.weatherTemp.text = String(weather.temp)
             self.cityName.text = weather.name
             self.wind.text = "\(weather.wind_speed) m/s, \(weather.wind_dir)"

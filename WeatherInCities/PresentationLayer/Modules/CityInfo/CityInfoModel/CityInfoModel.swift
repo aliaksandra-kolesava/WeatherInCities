@@ -8,11 +8,12 @@
 
 import Foundation
 import UIKit
+import SVGKit
 
 protocol CityInfoModelProtocol {
     var weatherInfo: WeatherModel? { get set }
     func loadData(lat: String, lon: String)
-    func loadImage(icon: String, completion: @escaping (UIImage?) -> Void)
+    func loadImage(icon: String, completion: @escaping (SVGKImage?) -> Void)
     
 }
 
@@ -42,7 +43,7 @@ class CityInfoModel: CityInfoModelProtocol {
         }
     }
     
-    func loadImage(icon: String, completion: @escaping (UIImage?) -> Void) {
+    func loadImage(icon: String, completion: @escaping (SVGKImage?) -> Void) {
         let image = networkManager.checkCache(icon: icon)
         guard let picture = image else {
             self.networkManager.loadImage(icon: icon) { (loadingImage, error) in

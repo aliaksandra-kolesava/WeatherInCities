@@ -10,7 +10,6 @@ import Foundation
 
 protocol CitiesListModelProtocol {
     var weatherArray: [WeatherModel] { get set }
-    var currentLatLon: [LatLon] { get set }
     func loadData()
 }
 
@@ -30,7 +29,6 @@ class CitiesListModel: CitiesListModelProtocol {
         self.networkManager = networkManager
     }
     weak var delegate: CitiesListDelegate?
-    var currentLatLon: [LatLon] = []
     var weatherArray: [WeatherModel] = []
     var latLonArray: [LatLon] = [LatLon(lat: "51.5085300", lon: "-0.1257400"),
     LatLon(lat: "40.7142700", lon: "-74.0059700"),
@@ -53,8 +51,6 @@ class CitiesListModel: CitiesListModelProtocol {
             guard let weather = weather else { return }
             self.weatherArray.append(weather)
             self.delegate?.loadComplited()
-            self.currentLatLon.append(latLon)
-                print("\(weather.name) (\(latLon.lat), \(latLon.lon)")
             }
         }
     }
