@@ -9,5 +9,10 @@
 import Foundation
 
 protocol WeatherRequestProtocol {
-    func urlRequest(lat: String, lon: String) -> URLRequest?
+    func urlRequest(lat: String?, lon: String?, icon: String?) -> URLRequest?
+//    func urlRequestImage(icon: String) -> URLRequest?
 }
+
+//protocol WeatherRequestImageProtocol {
+//    func urlRequestImage(icon: String) -> URLRequest?
+//}

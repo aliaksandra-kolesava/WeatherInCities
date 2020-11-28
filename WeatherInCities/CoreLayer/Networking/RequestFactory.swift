@@ -13,5 +13,9 @@ struct RequestFactory {
         static func newWeatherConfig() -> RequestConfig<WeatherParser> {
             return RequestConfig<WeatherParser>(request: WeatherRequest(), parser: WeatherParser())
         }
+        
+        static func newWeatherImage() -> RequestConfig<ImageParser> {
+            return RequestConfig<ImageParser>(request: ImageRequest(), parser: ImageParser())
+        }
     }
 }

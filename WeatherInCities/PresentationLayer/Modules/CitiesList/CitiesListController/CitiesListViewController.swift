@@ -11,6 +11,7 @@ import UIKit
 class CitiesListViewController: UIViewController {
     
     var model: CitiesListModelProtocol?
+    var presentationAssembly: PresentationAssemblyProtocol?
     var filteredTableData = [WeatherModel]()
     var searchController = UISearchController()
     var isSearchBarEmpty: Bool {
@@ -23,6 +24,7 @@ class CitiesListViewController: UIViewController {
         // Do any additional setup after loading the view.
         citiesTableView.register(UINib(nibName: "CityViewCell", bundle: nil), forCellReuseIdentifier: "CityCell")
         citiesTableView.dataSource = self
+        citiesTableView.delegate = self
         loadData()
         searchControllerSetup()
     }
@@ -76,6 +78,19 @@ extension CitiesListViewController: UITableViewDataSource {
         }
         }
         return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension CitiesListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cityInfoViewController = presentationAssembly?.cityInfoCiewController() else { return }
+        navigationController?.pushViewController(cityInfoViewController, animated: true)
+        cityInfoViewController.lat = model?.currentLatLon[indexPath.row].lat
+        cityInfoViewController.lon = model?.currentLatLon[indexPath.row].lon
+        cityInfoViewController.icon = model?.weatherArray[indexPath.row].icon
+        citiesTableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

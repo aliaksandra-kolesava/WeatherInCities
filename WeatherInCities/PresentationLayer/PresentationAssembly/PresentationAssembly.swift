@@ -12,6 +12,7 @@ import UIKit
 protocol PresentationAssemblyProtocol {
     func mainNavigationController() -> UINavigationController
     func citiesListViewController() -> CitiesListViewController
+    func cityInfoCiewController() -> CityInfoViewController
 }
 
 class PresentationAssembly: PresentationAssemblyProtocol {
@@ -36,7 +37,17 @@ class PresentationAssembly: PresentationAssemblyProtocol {
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         guard let citiesListViewController = storyboard.instantiateViewController(withIdentifier: "CitiesListViewController") as? CitiesListViewController else { return CitiesListViewController() }
         citiesListViewController.model = model
+        citiesListViewController.presentationAssembly = self
         model.delegate = citiesListViewController
         return citiesListViewController
+    }
+    
+    func cityInfoCiewController() -> CityInfoViewController {
+        let model = CityInfoModel(networkManager: serviceAssembly.networkManager)
+        let storyboard: UIStoryboard = UIStoryboard(name: "CityInfo", bundle: nil)
+        guard let cityInfoViewController = storyboard.instantiateViewController(withIdentifier: "CityInfoViewController") as? CityInfoViewController else { return CityInfoViewController() }
+        cityInfoViewController.model = model
+        model.delegate = cityInfoViewController
+        return cityInfoViewController
     }
 }
