@@ -14,5 +14,4 @@ protocol CoreAssemblyProtocol {
 
 class CoreAssembly: CoreAssemblyProtocol {
     var requestSender: RequestSenderProtocol = RequestSender()
-    
 }

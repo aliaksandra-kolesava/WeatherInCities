@@ -22,11 +22,15 @@ class CitiesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        tableViewSetup()
+        loadData()
+        searchControllerSetup()
+    }
+    
+    func tableViewSetup() {
         citiesTableView.register(UINib(nibName: "CityViewCell", bundle: nil), forCellReuseIdentifier: "CityCell")
         citiesTableView.dataSource = self
         citiesTableView.delegate = self
-        loadData()
-        searchControllerSetup()
     }
     
     func loadData() {
@@ -49,7 +53,6 @@ class CitiesListViewController: UIViewController {
         filteredTableData = sortedData.filter { (weather: WeatherModel) -> Bool in
             return weather.name.lowercased().contains(searchText.lowercased())
         }
-        
         citiesTableView.reloadData()
     }
 }

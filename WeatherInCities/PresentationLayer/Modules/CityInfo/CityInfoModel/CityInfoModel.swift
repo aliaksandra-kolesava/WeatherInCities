@@ -14,7 +14,6 @@ protocol CityInfoModelProtocol {
     var weatherInfo: WeatherModel? { get set }
     func loadData(lat: String, lon: String)
     func loadImage(icon: String, completion: @escaping (SVGKImage?) -> Void)
-    
 }
 
 protocol CityInfoDelegate: class {

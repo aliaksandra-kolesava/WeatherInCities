@@ -25,7 +25,16 @@ class CityInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        loadData()
+    }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        let fontResize = weatherIcon.bounds.size.height
+        weatherTemp.font = UIFont.systemFont(ofSize: fontResize / 2)
+        cityName.font = UIFont.systemFont(ofSize: fontResize / 4)
+    }
+    
+    func loadData() {
         guard let lat = lat else { return }
         guard let lon = lon else { return }
         guard let icon = icon else { return }
@@ -39,13 +48,9 @@ class CityInfoViewController: UIViewController {
             })
         }
     }
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        let fontTemperature = weatherIcon.bounds.size.height / 2
-        weatherTemp.font = UIFont.systemFont(ofSize: fontTemperature)
-        cityName.font = UIFont.systemFont(ofSize: fontTemperature / 2)
-    }
 }
+
+// MARK: - CityInfoDelegate
 
 extension CityInfoViewController: CityInfoDelegate {
     func loadComplited() {
